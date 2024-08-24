@@ -42,5 +42,7 @@ def test_multihead():
     context_vecs = mha(batch)
     print(context_vecs)
     print("context_vecs.shape:", context_vecs.shape)
+    # output dim is 4 because d_out * d_out = 4 . 2 heads.
+    assert context_vecs.shape[2] == 4
     
 
