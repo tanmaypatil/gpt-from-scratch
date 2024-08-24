@@ -28,6 +28,7 @@ def test_casual_Attn():
     torch.manual_seed(123)
     batch = torch.stack((inputs, inputs), dim=0)
     context_length = batch.shape[1]
+    assert context_length == 6
     ca = CausalAttention(d_in, d_out, context_length, 0.0)
     z = (ca(batch))
     
