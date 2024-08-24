@@ -9,6 +9,7 @@ inputs = torch.tensor(
          [0.77, 0.25, 0.10],  # one      (x^5)
          [0.05, 0.80, 0.55]]  # step     (x^6)
     )
+batch = torch.stack((inputs, inputs), dim=0)
 
 def test_attn():
     torch.manual_seed(123)
@@ -26,11 +27,20 @@ def test_attention2():
     
 def test_casual_Attn():
     torch.manual_seed(123)
-    batch = torch.stack((inputs, inputs), dim=0)
     context_length = batch.shape[1]
     assert context_length == 6
     ca = CausalAttention(d_in, d_out, context_length, 0.0)
     z = (ca(batch))
-    
     print(z)
+    
+def test_multihead():
+    context_length = batch.shape[1] # This is the number of tokens
+    torch.manual_seed(123)
+    d_in, d_out = 3, 2
+    mha = MultiHeadAttentionWrapper(
+    d_in, d_out, context_length, 0.0, num_heads=2)
+    context_vecs = mha(batch)
+    print(context_vecs)
+    print("context_vecs.shape:", context_vecs.shape)
+    
 
